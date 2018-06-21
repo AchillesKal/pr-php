@@ -21,7 +21,7 @@ $routes->add('front_page',
             '_controller' => 'PrPHP\FrontPage\Presentation\FrontPageController::show'
         ),
         [],[],"",[],
-        "POST"
+        "GET"
     )
 );
 
@@ -39,13 +39,18 @@ $matcher = new UrlMatcher($routes, $context);
 
 try {
     extract($matcher->match($request->getPathInfo()), EXTR_SKIP);
-    $response = new \Symfony\Component\HttpFoundation\Response('Worth it :D');
+    [$controllerName, $method] = explode('::', $_controller);
+
+    $controller = new $controllerName;
+    $response = $controller->$method($request, $vars);
 
 } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $exception) {
     $response = new \Symfony\Component\HttpFoundation\Response(
         'Not found',
         404
     );
+} catch (\Symfony\Component\Routing\Exception\MethodNotAllowedException $exception) {
+    $response = new \Symfony\Component\HttpFoundation\Response('Method not allowed', 500);
 } catch (Exception $exception) {
     $response = new \Symfony\Component\HttpFoundation\Response('An error occurred', 500);
 }
