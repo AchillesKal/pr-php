@@ -6,32 +6,12 @@ require ROOT_DIR . '/vendor/autoload.php';
 
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Route;
 
 \Tracy\Debugger::enable();
 
 $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
-$routes = new RouteCollection();
-
-$routes->add('front_page',
-    new Route('/',
-        array(
-            '_controller' => 'PrPHP\FrontPage\Presentation\FrontPageController::show'
-        ),
-        [],[],"",[],
-        "GET"
-    )
-);
-
-$routes->add('submition',
-    new Route('/submit',
-        array(
-            '_controller' => 'PrPHP\Submission\Presentation\SubmissionController::show'
-        )
-    )
-);
+$routes = include(ROOT_DIR . '/src/Routes.php');
 
 $context = new RequestContext();
 $context->fromRequest($request);
