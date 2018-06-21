@@ -15,22 +15,40 @@ $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
 $routes = new RouteCollection();
 
-$routes->add('front_page', new Route('/',
-    array(
-        '_controller' => 'PrPHP\FrontPage\Presentation\FrontPageController::show'
+$routes->add('front_page',
+    new Route('/',
+        array(
+            '_controller' => 'PrPHP\FrontPage\Presentation\FrontPageController::show'
+        ),
+        [],[],"",[],
+        "POST"
     )
-));
+);
 
-$routes->add('submition', new Route('/submit',
-    array(
-        '_controller' => 'PrPHP\Submission\Presentation\SubmissionController::show'
+$routes->add('submition',
+    new Route('/submit',
+        array(
+            '_controller' => 'PrPHP\Submission\Presentation\SubmissionController::show'
+        )
     )
-));
+);
 
 $context = new RequestContext();
 $context->fromRequest($request);
 $matcher = new UrlMatcher($routes, $context);
 
+try {
+    extract($matcher->match($request->getPathInfo()), EXTR_SKIP);
+    $response = new \Symfony\Component\HttpFoundation\Response('Worth it :D');
+
+} catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $exception) {
+    $response = new \Symfony\Component\HttpFoundation\Response(
+        'Not found',
+        404
+    );
+} catch (Exception $exception) {
+    $response = new \Symfony\Component\HttpFoundation\Response('An error occurred', 500);
+}
 
 if (!$response instanceof \Symfony\Component\HttpFoundation\Response) {
     throw new \Exception('Controller methods must return a Response object');
