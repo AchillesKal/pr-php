@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace SocialNews\Submission\Presentation;
+namespace PrPHP\Submission\Presentation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

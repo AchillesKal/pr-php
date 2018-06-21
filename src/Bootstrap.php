@@ -43,7 +43,6 @@ try {
 
     $controller = new $controllerName;
     $response = $controller->$method($request, $vars);
-
 } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $exception) {
     $response = new \Symfony\Component\HttpFoundation\Response(
         'Not found',
