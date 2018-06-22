@@ -21,7 +21,10 @@ try {
     extract($matcher->match($request->getPathInfo()), EXTR_SKIP);
     [$controllerName, $method] = explode('::', $_controller);
 
-    $controller = new $controllerName;
+    $factory = new PrPHP\Framework\Rendering\TwigTemplateRendererFactory();
+    $templateRenderer = $factory->create();
+    $controller = new $controllerName($templateRenderer);
+
     $response = $controller->$method($request, $vars);
 } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $exception) {
     $response = new \Symfony\Component\HttpFoundation\Response(
