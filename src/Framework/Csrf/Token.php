@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace SocialNews\Framework\Csrf;
+namespace PrPHP\Framework\Csrf;
 
 final class Token
 {
