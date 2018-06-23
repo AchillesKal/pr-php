@@ -7,8 +7,6 @@ use PrPHP\Framework\Rendering\TemplateDirectory;
 
 $injector = new Injector();
 
-$injector->define(TemplateDirectory::class, [':rootDirectory' => ROOT_DIR]);
-
 $injector->delegate(
     TemplateRenderer::class,
     function () use ($injector): TemplateRenderer {
@@ -16,5 +14,7 @@ $injector->delegate(
         return $factory->create();
     }
 );
+
+$injector->define(TemplateDirectory::class, [':rootDirectory' => ROOT_DIR]);
 
 return $injector;
