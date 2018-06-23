@@ -23,7 +23,8 @@ try {
 
     $injector = include('Dependencies.php');
     $controller = $injector->make($controllerName);
-    $response = $controller->$method($request, $vars);
+
+    $response = $controller->$method($request);
 } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $exception) {
     $response = new \Symfony\Component\HttpFoundation\Response(
         'Not found',
