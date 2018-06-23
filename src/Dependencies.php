@@ -6,15 +6,14 @@ use PrPHP\Framework\Rendering\TwigTemplateRendererFactory;
 use PrPHP\Framework\Rendering\TemplateDirectory;
 
 use PrPHP\FrontPage\Application\SubmissionsQuery;
-use PrPHP\FrontPage\Infrastructure\MockSubmissionsQuery;
-
+use PrPHP\FrontPage\Infrastructure\DbalSubmissionsQuery;
 use Doctrine\DBAL\Connection;
 use PrPHP\Framework\Dbal\ConnectionFactory;
 use PrPHP\Framework\Dbal\DatabaseUrl;
 
 $injector = new Injector();
 
-$injector->alias(SubmissionsQuery::class, MockSubmissionsQuery::class);
+$injector->alias(SubmissionsQuery::class, DbalSubmissionsQuery::class);
 $injector->share(SubmissionsQuery::class);
 
 $injector->delegate(
