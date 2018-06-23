@@ -14,11 +14,23 @@ $routes->add('front_page',
     )
 );
 
-$routes->add('submition',
+$routes->add('submission',
     new Routing\Route('/submit',
         array(
             '_controller' => 'PrPHP\Submission\Presentation\SubmissionController::show'
-        )
+        ),
+        [],[],"",[],
+        "GET"
+    )
+);
+
+$routes->add('post_submission',
+    new Routing\Route('/submit',
+        array(
+            '_controller' => 'PrPHP\Submission\Presentation\SubmissionController::submit'
+        ),
+        [],[],"",[],
+        "POST"
     )
 );
 
