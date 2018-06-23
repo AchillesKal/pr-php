@@ -30,6 +30,8 @@ $injector->define(
     [':url' => 'sqlite:///' . ROOT_DIR . '/storage/db.sqlite3']
 );
 
+$injector->share(Connection::class);
+
 $injector->delegate(Connection::class, function () use ($injector): Connection {
     $factory = $injector->make(ConnectionFactory::class);
     return $factory->create();
