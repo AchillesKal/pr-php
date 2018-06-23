@@ -4,12 +4,20 @@ namespace PrPHP\Submission\Presentation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use PrPHP\Framework\Rendering\TemplateRenderer;
 
 final class SubmissionController
 {
-    public function show(Request $request): Response
+    private $templateRenderer;
+
+    public function __construct(TemplateRenderer $templateRenderer)
     {
-        $content = 'Submission Controller';
+        $this->templateRenderer = $templateRenderer;
+    }
+
+    public function show(): Response
+    {
+        $content = $this->templateRenderer->render('Submission.html.twig');
         return new Response($content);
     }
 }
