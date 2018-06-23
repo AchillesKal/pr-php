@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace SocialNews\FrontPage\Application;
+namespace PrPHP\FrontPage\Application;
 
 interface SubmissionsQuery
 {
