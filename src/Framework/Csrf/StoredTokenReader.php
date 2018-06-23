@@ -5,7 +5,7 @@ namespace PrPHP\Framework\Csrf;
 final class StoredTokenReader
 {
     private $tokenStorage;
-    
+
     public function __construct(TokenStorage $tokenStorage) {
         $this->tokenStorage = $tokenStorage;
     }

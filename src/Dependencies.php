@@ -11,10 +11,18 @@ use Doctrine\DBAL\Connection;
 use PrPHP\Framework\Dbal\ConnectionFactory;
 use PrPHP\Framework\Dbal\DatabaseUrl;
 
+use PrPHP\Framework\Csrf\TokenStorage;
+use PrPHP\Framework\Csrf\SymfonySessionTokenStorage;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 $injector = new Injector();
 
 $injector->alias(SubmissionsQuery::class, DbalSubmissionsQuery::class);
 $injector->share(SubmissionsQuery::class);
+
+$injector->alias(TokenStorage::class, SymfonySessionTokenStorage::class);
+$injector->alias(SessionInterface::class, Session::class);
 
 $injector->delegate(
     TemplateRenderer::class,
