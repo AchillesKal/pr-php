@@ -10,7 +10,8 @@
   },
   "autoload": {
     "psr-4": {
-      "PrPHP\\": "src/"
+      "PrPHP\\": "src/",
+      "Migrations\\": "migrations/"
     }
   }
 }
