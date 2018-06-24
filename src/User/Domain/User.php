@@ -93,5 +93,6 @@ final class User
         }
         $this->failedLoginAttempts = 0;
         $this->lastFailedLoginAttempt = null;
+        $this->recordedEvents[] = new UserWasLoggedIn();
     }
 }

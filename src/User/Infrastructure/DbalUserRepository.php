@@ -8,14 +8,20 @@ use PrPHP\User\Domain\User;
 use PrPHP\User\Domain\UserRepository;
 use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
+use PrPHP\User\Domain\UserWasLoggedIn;
+use LogicException;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 
 final class DbalUserRepository implements UserRepository
 {
     private $connection;
+    private $session;
 
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, Session $session)
     {
         $this->connection = $connection;
+        $this->session = $session;
     }
 
     public function add(User $user): void
@@ -38,6 +44,15 @@ final class DbalUserRepository implements UserRepository
 
     public function save(User $user): void
     {
+        foreach ($user->getRecordedEvents() as $event) {
+            if ($event instanceof UserWasLoggedIn) {
+                $this->session->set('userId', $user->getId()->toString());
+                continue;
+            }
+            throw new LogicException(get_class($event) . ' was not handled');
+        }
+        $user->clearRecordedEvents();
+
         $qb = $this->connection->createQueryBuilder();
         $qb->update('users');
         $qb->set('nickname', $qb->createNamedParameter($user->getNickname()));
