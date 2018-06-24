@@ -3,6 +3,7 @@
 namespace PrPHP\Submission\Presentation;
 
 use PrPHP\Framework\Csrf\Token;
+use PrPHP\Submission\Application\SubmitLinkHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ final class SubmissionController
         TemplateRenderer $templateRenderer,
         StoredTokenValidator $storedTokenValidator,
         Session $session,
-        SubmitLink $submitLinkHandler
+        SubmitLinkHandler $submitLinkHandler
 
     )
     {

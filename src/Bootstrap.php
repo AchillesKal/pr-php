@@ -33,6 +33,7 @@ try {
 } catch (\Symfony\Component\Routing\Exception\MethodNotAllowedException $exception) {
     $response = new \Symfony\Component\HttpFoundation\Response('Method not allowed', 500);
 } catch (Exception $exception) {
+    var_dump($exception);
     $response = new \Symfony\Component\HttpFoundation\Response('An error occurred', 500);
 }
 

@@ -1,8 +1,7 @@
 <?php declare(strict_types=1);
 
-namespace SocialNews\Submission\Application;
+namespace PrPHP\Submission\Application;
 
-use PrPHP\Submission\Application\SubmitLink;
 use PrPHP\Submission\Domain\SubmissionRepository;
 use PrPHP\Submission\Domain\Submission;
 

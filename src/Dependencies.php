@@ -16,6 +16,9 @@ use PrPHP\Framework\Csrf\SymfonySessionTokenStorage;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+use PrPHP\Submission\Domain\SubmissionRepository;
+use PrPHP\Submission\Infrastructure\DbalSubmissionRepository;
+
 $injector = new Injector();
 
 $injector->alias(SubmissionsQuery::class, DbalSubmissionsQuery::class);
@@ -23,6 +26,7 @@ $injector->share(SubmissionsQuery::class);
 
 $injector->alias(TokenStorage::class, SymfonySessionTokenStorage::class);
 $injector->alias(SessionInterface::class, Session::class);
+$injector->alias(SubmissionRepository::class, DbalSubmissionRepository::class);
 
 $injector->delegate(
     TemplateRenderer::class,
