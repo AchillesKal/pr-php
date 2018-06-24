@@ -40,7 +40,7 @@ $routes->add('register',
             '_controller' => 'PrPHP\User\Presentation\RegistrationController::show'
         ),
         [],[],"",[],
-        "POST"
+        "GET"
     )
 );
 
