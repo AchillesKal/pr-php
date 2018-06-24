@@ -64,4 +64,14 @@ $routes->add('login',
     )
 );
 
+$routes->add('login_post',
+    new Routing\Route('/login',
+        array(
+            '_controller' => 'PrPHP\User\Presentation\LoginController::logIn'
+        ),
+        [],[],"",[],
+        "POST"
+    )
+);
+
 return $routes;
