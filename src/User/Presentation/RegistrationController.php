@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace SocialNews\User\Presentation;
+namespace PrPHP\User\Presentation;
 
 use PrPHP\Framework\Rendering\TemplateRenderer;
 use Symfony\Component\HttpFoundation\Response;
