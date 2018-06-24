@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use PrPHP\Framework\Rendering\TemplateRenderer;
 use PrPHP\Framework\Csrf\StoredTokenValidator;
 use Symfony\Component\HttpFoundation\Session\Session;
+use PrPHP\Submission\Application\SubmitLink;
 
 final class SubmissionController
 {
@@ -21,12 +22,15 @@ final class SubmissionController
     public function __construct(
         TemplateRenderer $templateRenderer,
         StoredTokenValidator $storedTokenValidator,
-        Session $session
+        Session $session,
+        SubmitLink $submitLinkHandler
+
     )
     {
         $this->templateRenderer = $templateRenderer;
         $this->storedTokenValidator = $storedTokenValidator;
         $this->session = $session;
+        $this->submitLinkHandler = $submitLinkHandler;
     }
 
     public function show(): Response
@@ -45,6 +49,11 @@ final class SubmissionController
             $this->session->getFlashBag()->add('errors', 'Invalid token');
             return $response;
         }
+
+        $this->submitLinkHandler->handle(new SubmitLink(
+            $request->get('url'),
+            $request->get('title')
+        ));
 
         $this->session->getFlashBag()->add(
             'success',
