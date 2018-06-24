@@ -54,4 +54,14 @@ $routes->add('register_post',
     )
 );
 
+$routes->add('login',
+    new Routing\Route('/login',
+        array(
+            '_controller' => 'PrPHP\User\Presentation\LoginController::show'
+        ),
+        [],[],"",[],
+        "GET"
+    )
+);
+
 return $routes;
