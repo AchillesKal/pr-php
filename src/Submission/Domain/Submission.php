@@ -4,6 +4,7 @@ namespace PrPHP\Submission\Domain;
 
 use DateTimeImmutable;
 use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
 
 final class Submission
 {
@@ -12,7 +13,7 @@ final class Submission
     private$title;
     private$creationDate;
 
-    public function __construct(
+    private function __construct(
         UuidInterface $id,
         string $url,
         string $title,
@@ -22,6 +23,16 @@ final class Submission
         $this->url = $url;
         $this->title = $title;
         $this->creationDate = $creationDate;
+    }
+
+    public static function submit(string $url, string $title): Submission
+    {
+        return new Submission(
+            Uuid::uuid4(),
+            $url,
+            $title,
+            new DateTimeImmutable()
+        );
     }
 
     public function getId(): UuidInterface
