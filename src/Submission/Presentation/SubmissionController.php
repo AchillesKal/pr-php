@@ -2,17 +2,31 @@
 
 namespace PrPHP\Submission\Presentation;
 
+use PrPHP\Framework\Csrf\Token;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use PrPHP\Framework\Rendering\TemplateRenderer;
+use PrPHP\Framework\Csrf\StoredTokenValidator;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 final class SubmissionController
 {
     private $templateRenderer;
 
-    public function __construct(TemplateRenderer $templateRenderer)
+    private $storedTokenValidator;
+
+    private $session;
+
+    public function __construct(
+        TemplateRenderer $templateRenderer,
+        StoredTokenValidator $storedTokenValidator,
+        Session $session
+    )
     {
         $this->templateRenderer = $templateRenderer;
+        $this->storedTokenValidator = $storedTokenValidator;
+        $this->session = $session;
     }
 
     public function show(): Response
@@ -23,7 +37,19 @@ final class SubmissionController
 
     public function submit(Request $request): Response
     {
-        $content = $request->get('title') . ' - ' . $request->get('url');
-        return new Response($content);
+        $response = new RedirectResponse('/submit');
+        if (!$this->storedTokenValidator->validate(
+            'submission',
+            new Token((string)$request->get('token'))
+        )) {
+            $this->session->getFlashBag()->add('errors', 'Invalid token');
+            return $response;
+        }
+
+        $this->session->getFlashBag()->add(
+            'success',
+            'Your URL was submitted successfully'
+        );
+        return $response;
     }
 }
