@@ -3,14 +3,18 @@
 namespace PrPHP\User\Presentation;
 
 use PrPHP\Framework\Csrf\StoredTokenValidator;
+use PrPHP\User\Application\NicknameTakenQuery;
 use Symfony\Component\HttpFoundation\Request;
 
 final class RegisterUserFormFactory
 {
     private $storedTokenValidator;
-    public function __construct(StoredTokenValidator $storedTokenValidator)
+    private $nicknameTakenQuery;
+
+    public function __construct(StoredTokenValidator $storedTokenValidator, NicknameTakenQuery $nicknameTakenQuery)
     {
         $this->storedTokenValidator = $storedTokenValidator;
+        $this->nicknameTakenQuery = $nicknameTakenQuery;
     }
     public function createFromRequest(Request $request): RegisterUserForm
     {
@@ -18,7 +22,8 @@ final class RegisterUserFormFactory
             $this->storedTokenValidator,
             (string)$request->get('token'),
             (string)$request->get('nickname'),
-            (string)$request->get('password')
+            (string)$request->get('password'),
+            $this->nicknameTakenQuery
         );
     }
 }

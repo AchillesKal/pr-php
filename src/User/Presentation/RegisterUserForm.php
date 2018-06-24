@@ -5,6 +5,7 @@ namespace PrPHP\User\Presentation;
 use PrPHP\Framework\Csrf\StoredTokenValidator;
 use PrPHP\User\Application\RegisterUser;
 use PrPHP\Framework\Csrf\Token;
+use PrPHP\User\Application\NicknameTakenQuery;
 
 final class RegisterUserForm
 {
@@ -13,16 +14,20 @@ final class RegisterUserForm
     private $token;
     private $nickname;
     private $password;
+    private $nicknameTakenQuery;
+
     public function __construct(
         StoredTokenValidator $storedTokenValidator,
         string $token,
         string $nickname,
-        string $password
+        string $password,
+        NicknameTakenQuery $nicknameTakenQuery
     ) {
         $this->storedTokenValidator = $storedTokenValidator;
         $this->token = $token;
         $this->nickname = $nickname;
         $this->password = $password;
+        $this->nicknameTakenQuery = $nicknameTakenQuery;
     }
 
     public function hasValidationErrors(): bool
@@ -52,6 +57,10 @@ final class RegisterUserForm
         }
         if (strlen($this->password) < 8) {
             $errors[] = 'Password must be at least 8 characters';
+        }
+
+        if ($this->nicknameTakenQuery->execute($this->nickname)) {
+            $errors[] = 'This nickname is already being used';
         }
 
         return $errors;

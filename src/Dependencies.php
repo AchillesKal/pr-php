@@ -22,6 +22,9 @@ use PrPHP\Submission\Infrastructure\DbalSubmissionRepository;
 use PrPHP\User\Domain\UserRepository;
 use PrPHP\User\Infrastructure\DbalUserRepository;
 
+use PrPHP\User\Application\NicknameTakenQuery;
+use PrPHP\User\Infrastructure\DbalNicknameTakenQuery;
+
 $injector = new Injector();
 
 $injector->alias(SubmissionsQuery::class, DbalSubmissionsQuery::class);
@@ -31,6 +34,7 @@ $injector->alias(TokenStorage::class, SymfonySessionTokenStorage::class);
 $injector->alias(SessionInterface::class, Session::class);
 $injector->alias(SubmissionRepository::class, DbalSubmissionRepository::class);
 $injector->alias(UserRepository::class, DbalUserRepository::class);
+$injector->alias(NicknameTakenQuery::class, DbalNicknameTakenQuery::class);
 
 $injector->delegate(
     TemplateRenderer::class,
