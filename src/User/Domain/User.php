@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace SocialNews\User\Domain;
+namespace PrPHP\User\Domain;
 
 use DateTimeImmutable;
 use Ramsey\Uuid\UuidInterface;
@@ -23,5 +23,15 @@ final class User
         $this->nickname = $nickname;
         $this->passwordHash = $passwordHash;
         $this->creationDate = $creationDate;
+    }
+
+    public static function register(string $nickname, string $password): User
+    {
+        return new User(
+            Uuid::uuid4(),
+            $nickname,
+            password_hash($password, PASSWORD_DEFAULT),
+            new DateTimeImmutable()
+        );
     }
 }
