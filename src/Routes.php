@@ -44,4 +44,14 @@ $routes->add('register',
     )
 );
 
+$routes->add('register_post',
+    new Routing\Route('/register',
+        array(
+            '_controller' => 'PrPHP\User\Presentation\RegistrationController::register'
+        ),
+        [],[],"",[],
+        "POST"
+    )
+);
+
 return $routes;
