@@ -16,20 +16,20 @@ final class SubmissionController
 {
     private $templateRenderer;
 
-    private $storedTokenValidator;
+    private $submissionFormFactory;
 
     private $session;
 
     public function __construct(
         TemplateRenderer $templateRenderer,
-        StoredTokenValidator $storedTokenValidator,
+        SubmissionFormFactory $submissionFormFactory,
         Session $session,
         SubmitLinkHandler $submitLinkHandler
 
     )
     {
         $this->templateRenderer = $templateRenderer;
-        $this->storedTokenValidator = $storedTokenValidator;
+        $this->submissionFormFactory = $submissionFormFactory;
         $this->session = $session;
         $this->submitLinkHandler = $submitLinkHandler;
     }
@@ -43,19 +43,17 @@ final class SubmissionController
     public function submit(Request $request): Response
     {
         $response = new RedirectResponse('/submit');
-        if (!$this->storedTokenValidator->validate(
-            'submission',
-            new Token((string)$request->get('token'))
-        )) {
-            $this->session->getFlashBag()->add('errors', 'Invalid token');
+
+        $form = $this->submissionFormFactory->createFromRequest($request);
+
+        if ($form->hasValidationErrors()) {
+            foreach ($form->getValidationErrors() as $errorMessage) {
+                $this->session->getFlashBag()->add('errors', $errorMessage);
+            }
             return $response;
         }
 
-        $this->submitLinkHandler->handle(new SubmitLink(
-            $request->get('url'),
-            $request->get('title')
-        ));
-
+        $this->submitLinkHandler->handle($form->toCommand());
         $this->session->getFlashBag()->add(
             'success',
             'Your URL was submitted successfully'
