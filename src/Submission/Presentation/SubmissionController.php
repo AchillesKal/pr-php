@@ -11,6 +11,7 @@ use PrPHP\Framework\Rendering\TemplateRenderer;
 use PrPHP\Framework\Csrf\StoredTokenValidator;
 use Symfony\Component\HttpFoundation\Session\Session;
 use PrPHP\Submission\Application\SubmitLink;
+use PrPHP\Framework\Rbac\Permission;
 
 final class SubmissionController
 {
@@ -20,12 +21,13 @@ final class SubmissionController
 
     private $session;
 
+    private $user;
+
     public function __construct(
         TemplateRenderer $templateRenderer,
         SubmissionFormFactory $submissionFormFactory,
         Session $session,
         SubmitLinkHandler $submitLinkHandler
-
     )
     {
         $this->templateRenderer = $templateRenderer;
@@ -36,12 +38,28 @@ final class SubmissionController
 
     public function show(): Response
     {
+        if (!$this->user->hasPermission(new Permission\SubmitLink())) {
+            $this->session->getFlashBag()->add(
+                'errors',
+                'You have to log in before you can submit a link.'
+            );
+            return new RedirectResponse('/login');
+        }
+
         $content = $this->templateRenderer->render('Submission.html.twig');
         return new Response($content);
     }
 
     public function submit(Request $request): Response
     {
+        if (!$this->user->hasPermission(new Permission\SubmitLink())) {
+            $this->session->getFlashBag()->add(
+                'errors',
+                'You have to log in before you can submit a link.'
+            );
+            return new RedirectResponse('/login');
+        }
+
         $response = new RedirectResponse('/submit');
 
         $form = $this->submissionFormFactory->createFromRequest($request);

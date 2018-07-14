@@ -24,6 +24,8 @@ use PrPHP\User\Infrastructure\DbalUserRepository;
 
 use PrPHP\User\Application\NicknameTakenQuery;
 use PrPHP\User\Infrastructure\DbalNicknameTakenQuery;
+use PrPHP\Framework\Rbac\User;
+use PrPHP\Framework\Rbac\SymfonySessionCurrentUserFactory;
 
 $injector = new Injector();
 
@@ -43,6 +45,11 @@ $injector->delegate(
         return $factory->create();
     }
 );
+
+$injector->delegate(User::class, function () use ($injector): User {
+    $factory = $injector->make(SymfonySessionCurrentUserFactory::class);
+    return $factory->create();
+});
 
 $injector->define(
     DatabaseUrl::class,
