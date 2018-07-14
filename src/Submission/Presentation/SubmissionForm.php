@@ -5,6 +5,7 @@ namespace PrPHP\Submission\Presentation;
 use PrPHP\Framework\Csrf\StoredTokenValidator;
 use PrPHP\Framework\Csrf\Token;
 use PrPHP\Submission\Application\SubmitLink;
+use PrPHP\Framework\Rbac\AuthenticatedUser;
 
 final class SubmissionForm
 {
@@ -51,8 +52,8 @@ final class SubmissionForm
         return (count($this->getValidationErrors()) > 0);
     }
 
-    public function toCommand(): SubmitLink
+    public function toCommand(AuthenticatedUser $author): SubmitLink
     {
-        return new SubmitLink($this->url, $this->title);
+        return new SubmitLink($author->getId(), $this->url, $this->title);
     }
 }
